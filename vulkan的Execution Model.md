@@ -28,4 +28,35 @@
 - transfer；
 - sparse memory management；
 
+## Command
+
+`Command`即application发出的，用来命令GPU执行的操作指令。一般可以分为3种类型：
+- action
+
+  这是真正要工作的`Command`，利用GPU等绘制图形，拷贝buffer等。
+
+- state
+
+  这种类型的`command`，是用来对一些状态进行管理的，比如一些descriptor sets、buffers等。
+  > 对descriptor sets、buffers等不了解很正常，提一下，后续会深入学习，学一个东西总是不断有新的名词冒出来，开始时很恼火，不过后来就习惯了。
+
+- synchronization
+  
+  这种command更多的是用来协调各种`Action command`，尤其是这些command对一些公共资源竞争时，或者彼此之间存在依赖关系，需要对它们进行排布，以更好地完成工作。
+
+### Command buffer
+
+- a collection of commands
+- records the commands and submit them to queues
+
 # vulkan执行模型
+
+## 简要过程
+
+1. application选择支持vulkan API的`PhysicalDevice`；
+2. application创建`Device`来代表选择的`PhysicalDevice`；
+3. 根据自己的需求，选择`PhysicalDevice`中包含的特定`Queue`；
+4. application发出的`Command`被记录在`Command Buffer`中；
+5. 之后，这些`Command buffer`被提交到`Queue`中；
+6. `PhysicalDevice`消费这些command，命令GPU执行对应的操作；
+
